@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, InternalServerErrorException } from '@nestjs/common';
+import { BadRequestException, Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { DatabaseService } from 'src/database/database.service';
 import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { LoginUsuarioDto } from './dto/login-usuario.dto';
@@ -6,9 +6,12 @@ import { LoginUsuarioDto } from './dto/login-usuario.dto';
 @Injectable()
 export class UsuarioService {
 
+    private readonly logger = new Logger('RegisterService')
     constructor(
         private readonly _dataBaseService: DatabaseService
-    ){}
+    ){
+        this.logger.log('Conectado a la base de datos');
+    }
 
     public async crearUsuario(usuarioCrear: CreateUsuarioDto){
         try {
