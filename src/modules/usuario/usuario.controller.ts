@@ -3,9 +3,9 @@ import { CreateUsuarioDto } from './dto/create-usuario.dto';
 import { UsuarioService } from './usuario.service';
 import { LoginUsuarioDto } from './dto/login-usuario.dto';
 import { log } from 'console';
-import { MessagePattern } from '@nestjs/microservices';
+import { MessagePattern, Payload, RpcException } from '@nestjs/microservices';
 
-@Controller('usuario')
+@Controller()
 export class UsuarioController {
 
     constructor(
@@ -13,9 +13,8 @@ export class UsuarioController {
     ){}
 
     //@Post('crear-cuenta')
-    @MessagePattern({cmd: 'create_user'})
+    @MessagePattern({ cmd: 'crear' })
     public crearCuenta(@Body() usuario: CreateUsuarioDto){
         return this._usuarioService.crearUsuario(usuario);
     }
-
 }

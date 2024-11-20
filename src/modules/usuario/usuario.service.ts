@@ -14,31 +14,22 @@ export class UsuarioService {
         this.logger.log('Conectado a la base de datos');
     }
 
-    public async crearUsuario(usuarioCrear: CreateUsuarioDto){
+    public async crearUsuario(usuarioCrear: CreateUsuarioDto) {
         try {
-            if(await this.existUsuario(usuarioCrear.correo)){
-                throw new RpcException({
-                    status: HttpStatus.BAD_REQUEST,
-                    message: 'Correo utilizado para una cuenta'});
-            }
-
-            const usuario = await this._dataBaseService.usuario.create({
-                data: usuarioCrear,
-            });
-
-            return usuario;
-
-        }catch(error){
-            if(error instanceof RpcException){
-                throw error;
-            }
-
-            throw new RpcException({
-                status: HttpStatus.INTERNAL_SERVER_ERROR,
-                message: 'Error interno al crear usuario en el microservicio register'
-            })
+          // Crear el nuevo usuario sin verificación de correo duplicado
+          const nuevoUsuario = await this._dataBaseService.usuario.create({
+            data: usuarioCrear,
+          });
+      
+          return nuevoUsuario;
+        } catch (error) {
+          // Eliminar la parte de verificación del correo
+          throw new RpcException({
+            status: HttpStatus.INTERNAL_SERVER_ERROR,
+            message: 'Error interno al crear el usuario',
+          });
         }
-    }
+      }
 
     public async existUsuario(correo: string){
         const existeUsuario = await this._dataBaseService.usuario.findFirst({

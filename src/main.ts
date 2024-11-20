@@ -6,7 +6,7 @@ import { Logger, ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
 
-  const logger = new Logger('Main-register-Microservice');
+  const logger = new Logger('Registro');
   const app = await NestFactory.createMicroservice<MicroserviceOptions>(AppModule,
     {
       transport: Transport.TCP,
@@ -14,13 +14,6 @@ async function bootstrap() {
         port: envs.port
       }
     }
-  );
-
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-    }),
   );
 
   await app.listen();
